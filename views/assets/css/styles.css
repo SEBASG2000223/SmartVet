@@ -1,0 +1,33 @@
+.contactanos {
+    min-height: 25rem; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .divididor {
+    position: relative;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.divididor span {
+    padding: 7px;
+    font-size: 12px;
+    position: relative;   
+    z-index: 2;
+}
+.divididor:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    top: 55%;
+    left: 0;
+    z-index: 1;
+}
+
+
+#crearCuenta{
+  padding-bottom: 6%;
+}
