@@ -32,6 +32,10 @@
                                     <label for="cantidad">Cantidad</label>
                                     <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label for="precio">Precio</label>
+                                    <input type="number" class="form-control" id="precio" name="precio" required>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -63,6 +67,10 @@
                                     <label for="Ecantidad">Cantidad</label>
                                     <input type="number" class="form-control" id="Ecantidad" name="cantidad" required>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label for="Eprecio">Precio</label>
+                                    <input type="number" class="form-control" id="Eprecio" name="precio" required>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -77,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <br>
+<br>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">

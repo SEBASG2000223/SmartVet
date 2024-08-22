@@ -40,15 +40,16 @@
                     <li class="nav-item"><a class="nav-link" href="mascota.php">Mascotas</a></li>
                     <li class="nav-item"><a class="nav-link" href="detalleMascota.php">Detalles Mascota</a></li>
                     <li class="nav-item"><a class="nav-link" href="consulta.php">Consultas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="inventario.php">Inventario</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tratamiento.php">Tratamientos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="medicamento.php">Medicamentos</a></li>
                     <li class="nav-item"><a class="nav-link" href="factura.php">Facturas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tratamiento.php">Tratamientos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="detalleTratamiento.php">Detalle Tratamiento</a></li>
                     <li class="nav-item"><a class="nav-link" href="recetas.php">Recetas</a></li>
                     <li class="nav-item"><a class="nav-link" href="detalleHistorialMedico.php">Detalle Historial Médico</a></li>
                     <li class="nav-item"><a class="nav-link" href="detalleFactura.php">Detalles Factura</a></li>
                     <li class="nav-item"><a class="nav-link" href="historialMedico.php">Historial Médico</a></li>
                     <li class="nav-item"><a class="nav-link" href="usuario.php">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="inventario.php">Inventario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="medicamento.php">Medicamentos</a></li>
                 </ul>
             </div>
         </div>
