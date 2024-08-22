@@ -4,19 +4,21 @@ require_once '../models/consultaModel.php';
 switch ($_GET["op"]) {
     case 'listar_para_tabla':
         $consulta_model = new consultaModel();
-        $consultas = $consulta_model->listarTodasConsultas();
+        $consultas = $consulta_model->listarConsultasConDetalles();
         $data = array();
         foreach ($consultas as $consulta) {
             $data[] = array(
-                "0" => $consulta['id_consulta'],
-                "1" => $consulta['id_mascota'],
-                "2" => $consulta['id_cliente'],
-                "3" => $consulta['id_empleado'],
-                "4" => $consulta['fecha'],
-                "5" => $consulta['descripcion'],
-                "6" => $consulta['precio'],
-                "7" => $consulta['estado'], // Mostrar solo el estado como texto
-                "8" => '<button class="btn btn-warning" id="modificarConsulta">Modificar</button>'
+                "0" => isset($consulta['ID_CONSULTA']) ? $consulta['ID_CONSULTA'] : '',
+                "1" => isset($consulta['ID_MASCOTA']) ? $consulta['ID_MASCOTA'] : '',
+                "2" => isset($consulta['NOMBRE_MASCOTA']) ? $consulta['NOMBRE_MASCOTA'] : '',
+                "3" => isset($consulta['ID_CLIENTE']) ? $consulta['ID_CLIENTE'] : '',
+                "4" => isset($consulta['NOMBRE_CLIENTE']) ? $consulta['NOMBRE_CLIENTE'] : '',
+                "5" => isset($consulta['ID_EMPLEADO']) ? $consulta['ID_EMPLEADO'] : '',
+                "6" => isset($consulta['FECHA']) ? $consulta['FECHA'] : '',
+                "7" => isset($consulta['DESCRIPCION']) ? $consulta['DESCRIPCION'] : '',
+                "8" => isset($consulta['PRECIO']) ? $consulta['PRECIO'] : '',
+                "9" => isset($consulta['NOMBRE_ESTADO']) ? $consulta['NOMBRE_ESTADO'] : '',  // Aquí se añade el estado
+                "10" => '<button class="btn btn-warning" id="modificarConsulta">Modificar</button>'
             );
         }
         $resultados = array(
@@ -28,32 +30,64 @@ switch ($_GET["op"]) {
         echo json_encode($resultados);
         break;
     
+
         case 'insertar':
-            $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
-            $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
-            $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
+            $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : "";
+            
+            // Obtener el id_cliente asociado a la mascota
+            $consulta = new consultaModel();
+            $id_cliente = $consulta->obtenerClientePorMascota($id_mascota);
+            
+            if ($id_cliente === null) {
+                echo json_encode(array("error" => "No se encontró un cliente asociado a la mascota."));
+                return;
+            }
+            
             $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
             $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
-            $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
+            $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : "";
+            $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
+            $ID_EMPLEADO = isset($_POST["ID_EMPLEADO"]) ? trim($_POST["ID_EMPLEADO"]) : 1;
         
-            $consulta = new consultaModel();
+            // Asignar los valores al modelo
             $consulta->setIdMascota($id_mascota);
-            // El ID del cliente se establece en el modelo automáticamente
-            $consulta->setIdEmpleado($id_empleado);
-            $consulta->setIdEstado($id_estado);
+            $consulta->setIdCliente($id_cliente); 
+            $consulta->setIdEmpleado($ID_EMPLEADO); // Este valor se obtuvo automáticamente
             $consulta->setFecha($fecha);
             $consulta->setDescripcion($descripcion);
             $consulta->setPrecio($precio);
-            
-            $consulta->guardarConsulta();
-            echo 1;
+            $consulta->setIdEstado($id_estado);
+        
+            // Guardar la consulta en la base de datos
+            $resultado = $consulta->guardarConsulta();
+    if ($resultado === 1) {
+        echo json_encode(array("success" => true, "message" => "Consulta agregada correctamente."));
+    } else {
+        echo json_encode(array("success" => false, "message" => $resultado));
+    }
+    break;
             break;
+        
 
+            case 'obtener_cliente_por_mascota':
+                $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : "";
+                
+                $consulta = new consultaModel();
+                $id_cliente = $consulta->obtenerClientePorMascota($id_mascota);
+                
+                if ($id_cliente !== null) {
+                    echo json_encode(array("id_cliente" => $id_cliente));
+                } else {
+                    echo json_encode(array("id_cliente" => ""));
+                }
+                break;
+
+                
     case 'mostrar':
-        $id_consulta = isset($_POST["idConsulta"]) ? $_POST["idConsulta"] : "";
+        $id_consulta = isset($_POST["id_consulta"]) ? $_POST["id_consulta"] : "";
         $consulta = new consultaModel();
         $consulta->setIdConsulta($id_consulta);
-        $encontrado = $consulta->mostrar();
+        $encontrado = $consulta->listarConsultasConDetalles();
 
         if ($encontrado != null) {
             echo json_encode($encontrado);
@@ -62,45 +96,35 @@ switch ($_GET["op"]) {
         }
         break;
 
-        case 'editar':
-            $id = isset($_POST["id"]) ? trim($_POST["id"]) : "";
-            $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
-            $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
-            $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
-            $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
-            $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
-            $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
-        
-            $consulta = new consultaModel();
-            $consulta->setIdConsulta($id);
-            $consulta->setIdMascota($id_mascota);
-            // El ID del cliente se establece en el modelo automáticamente
-            $consulta->setIdEmpleado($id_empleado);
-            $consulta->setIdEstado($id_estado);
-            $consulta->setFecha($fecha);
-            $consulta->setDescripcion($descripcion);
-            $consulta->setPrecio($precio);
-        
-            $resultado = $consulta->actualizarConsulta();
-        
-            if ($resultado === true) {
-                echo 1;
-            } else {
-                echo 0;
-            }
-            break;
+    case 'editar':
+        $id_consulta = isset($_POST["id_consulta"]) ? trim($_POST["id_consulta"]) : "";
+        $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : "";
+        $id_cliente = isset($_POST["id_cliente"]) ? trim($_POST["id_cliente"]) : "";
+        $ID_EMPLEADO = isset($_POST["ID_EMPLEADO"]) ? trim($_POST["ID_EMPLEADO"]) : 1;
+        $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
+        $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
+        $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : "";
+        $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
 
-    case 'eliminar':
-        $id_consulta = isset($_POST["idConsulta"]) ? $_POST["idConsulta"] : "";
+
         $consulta = new consultaModel();
         $consulta->setIdConsulta($id_consulta);
-        $resultado = $consulta->eliminarConsulta();
+        $consulta->setIdMascota($id_mascota);
+        $consulta->setIdCliente($id_cliente);
+        $consulta->setIdEmpleado($ID_EMPLEADO);
+        $consulta->setFecha($fecha);
+        $consulta->setDescripcion($descripcion);
+        $consulta->setPrecio($precio);
+        $consulta->setIdEstado($id_estado);
 
+        $resultado = $consulta->actualizarConsulta();
         if ($resultado === true) {
-            echo 1;
+            echo json_encode(array("success" => true, "message" => "Consulta actualizada correctamente."));
         } else {
-            echo 0;
+            echo json_encode(array("success" => false, "message" => $resultado));
         }
         break;
+
+    // Agrega más casos según las necesidades de la aplicación...
 }
 ?>

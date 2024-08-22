@@ -26,11 +26,15 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="id_mascota">ID Mascota</label>
-                                    <input type="number" class="form-control" id="id_mascota" name="id_mascota" required>
+                                    <input type="NUMBER" class="form-control" id="id_mascota" name="id_mascota" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="id_empleado">ID Empleado</label>
-                                    <input type="number" class="form-control" id="id_empleado" name="id_empleado" required>
+                                    <label for="id_cliente">ID Cliente</label>
+                                    <input type="NUMBER" class="form-control" id="id_cliente" name="id_cliente" required readonly>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="ID_EMPLEADO">ID Empleado</label>
+                                    <input type="NUMBER" class="form-control" id="ID_EMPLEADO" name="ID_EMPLEADO" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="fecha">Fecha</label>
@@ -38,24 +42,24 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="descripcion">Descripción</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="precio">Precio</label>
-                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+                                    <input type="number" class="form-control" id="precio" name="precio" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="id_estado">Estado</label>
-                                    <select class="form-control" id="id_estado" name="id_estado" required>
-                                        <option value="1">Activo</option>
-                                        <option value="2">Inactivo</option>
-                                        <option value="3">Pendiente</option>
-                                        <option value="4">Pagado</option>
-                                        <option value="5">Cancelado</option>
-                                        <option value="6">Completado</option>
-                                        <option value="7">En Proceso</option>
-                                    </select>
-                                </div>
+    <label for="NOMBRE_ESTADO">Estado</label>
+    <select class="form-control" id="NOMBRE_ESTADO" name="NOMBRE_ESTADO" required>
+        <option value="1">Activo</option>
+        <option value="2">Inactivo</option>
+        <option value="3">Pendiente</option>
+        <option value="4">Pagado</option>
+        <option value="5">Cancelado</option>
+        <option value="6">Completado</option>
+        <option value="7">En Proceso</option>
+    </select>
+</div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -69,6 +73,7 @@
             </div>
         </div>
 
+        <!-- Formulario de actualización -->
         <div class="row">
             <div class="col-md-12" id="formulario_update" style="display: none;">
                 <div class="card card-dark">
@@ -84,8 +89,8 @@
                                     <input type="number" class="form-control" id="Eid_mascota" name="id_mascota" required readonly>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="Eid_empleado">ID Empleado</label>
-                                    <input type="number" class="form-control" id="Eid_empleado" name="id_empleado" required readonly>
+                                    <label for="Eid_cliente">ID Cliente</label>
+                                    <input type="number" class="form-control" id="Eid_cliente" name="id_cliente" required readonly>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Efecha">Fecha</label>
@@ -93,24 +98,28 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Edescripcion">Descripción</label>
-                                    <textarea class="form-control" id="Edescripcion" name="descripcion" rows="3" required></textarea>
+                                    <textarea class="form-control" id="Edescripcion" name="descripcion" required></textarea>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Eprecio">Precio</label>
-                                    <input type="number" class="form-control" id="Eprecio" name="precio" step="0.01" required>
+                                    <input type="number" class="form-control" id="Eprecio" name="precio" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="Eid_estado">Estado</label>
-                                    <select class="form-control" id="Eid_estado" name="id_estado" required>
-                                        <option value="1">Activo</option>
-                                        <option value="2">Inactivo</option>
-                                        <option value="3">Pendiente</option>
-                                        <option value="4">Pagado</option>
-                                        <option value="5">Cancelado</option>
-                                        <option value="6">Completado</option>
-                                        <option value="7">En Proceso</option>
-                                    </select>
+                                    <label for="EID_EMPLEADO">Id Empleado</label>
+                                    <input type="number" class="form-control" id="EID_EMPLEADO" name="ID_EMPLEADO" required>
                                 </div>
+                                <div class="form-group col-md-4">
+                                <label for="NOMBRE_ESTADO">Estado</label>
+    <select class="form-control" id="ENOMBRE_ESTADO" name="ENOMBRE_ESTADO" required>
+        <option value="1">Activo</option>
+        <option value="2">Inactivo</option>
+        <option value="3">Pendiente</option>
+        <option value="4">Pagado</option>
+        <option value="5">Cancelado</option>
+        <option value="6">Completado</option>
+        <option value="7">En Proceso</option>
+    </select>
+</div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -126,6 +135,7 @@
             </div>
         </div>
 
+        <!-- Tabla de consultas -->
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">
@@ -136,9 +146,12 @@
                         <table id="tbllistado" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Mascota</th>
-                                    <th>Empleado</th>
+                                    <th>ID Consulta</th>
+                                    <th>ID Mascota</th>
+                                    <th>Nombre Mascota</th>
+                                    <th>ID Cliente</th>
+                                    <th>Nombre Cliente</th>
+                                    <th>ID Empleado</th>
                                     <th>Fecha</th>
                                     <th>Descripción</th>
                                     <th>Precio</th>
@@ -151,9 +164,12 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Mascota</th>
-                                    <th>Empleado</th>
+                                    <th>ID Consulta</th>
+                                    <th>ID Mascota</th>
+                                    <th>Nombre Mascota</th>
+                                    <th>ID Cliente</th>
+                                    <th>Nombre Cliente</th>
+                                    <th>ID Empleado</th>
                                     <th>Fecha</th>
                                     <th>Descripción</th>
                                     <th>Precio</th>
@@ -174,6 +190,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="assets/js/consulta.js"></script>
 </body>
