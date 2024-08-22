@@ -11,8 +11,7 @@ switch ($_GET["op"]) {
                 "0" => $medicamento['id_medicamento'],
                 "1" => $medicamento['nombre_medicamento'],
                 "2" => $medicamento['descripcion_medicamento'],
-                "3" => $medicamento['id_inventario'],
-                "4" => '<button class="btn btn-warning" id="modificarMedicamento">Modificar</button>'
+                "3" => '<button class="btn btn-warning" id="modificarMedicamento">Modificar</button>'
             );
         }
         $resultados = array(
@@ -28,13 +27,11 @@ switch ($_GET["op"]) {
         $id_medicamento = isset($_POST["id_medicamento"]) ? trim($_POST["id_medicamento"]) : null;
         $nombre_medicamento = isset($_POST["nombre_medicamento"]) ? trim($_POST["nombre_medicamento"]) : "";
         $descripcion_medicamento = isset($_POST["descripcion_medicamento"]) ? trim($_POST["descripcion_medicamento"]) : "";
-        $id_inventario = isset($_POST["id_inventario"]) ? trim($_POST["id_inventario"]) : null;
 
         $medicamento = new medicamentoModel();
         $medicamento->setIdMedicamento($id_medicamento);
         $medicamento->setNombreMedicamento($nombre_medicamento);
         $medicamento->setDescripcionMedicamento($descripcion_medicamento);
-        $medicamento->setIdInventario($id_inventario);
 
         $medicamento->guardarMedicamento();
         echo 1;
@@ -57,13 +54,11 @@ switch ($_GET["op"]) {
             $id_medicamento = isset($_POST["id_medicamento"]) ? trim($_POST["id_medicamento"]) : "";
             $nombre_medicamento = isset($_POST["nombre_medicamento"]) ? trim($_POST["nombre_medicamento"]) : "";
             $descripcion_medicamento = isset($_POST["descripcion_medicamento"]) ? trim($_POST["descripcion_medicamento"]) : "";
-            $id_inventario = isset($_POST["id_inventario"]) ? trim($_POST["id_inventario"]) : "";
         
             $medicamento = new medicamentoModel();
             $medicamento->setIdMedicamento($id_medicamento);
             $medicamento->setNombreMedicamento($nombre_medicamento);
             $medicamento->setDescripcionMedicamento($descripcion_medicamento);
-            $medicamento->setIdInventario($id_inventario);
         
             $resultado = $medicamento->actualizarMedicamento();
         

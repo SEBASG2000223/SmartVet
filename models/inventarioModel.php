@@ -124,8 +124,45 @@ class inventarioModel
         }
     }
 
+    private function validarIdMedicamento($id_medicamento)
+    {
+        $query = "SELECT COUNT(*) AS count FROM FIDE_MEDICAMENTOS_TB WHERE ID_MEDICAMENTO = :id_medicamento";
+        self::getConexion();
+        $stmt = oci_parse(self::$cnx, $query);
+        oci_bind_by_name($stmt, ':id_medicamento', $id_medicamento);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        self::desconectar();
+        return $row['COUNT'] > 0;
+    }
+
+    // Función para verificar que el id_medicamento no exista ya en FIDE_INVENTARIO_TB
+    private function existeIdMedicamentoEnInventario($id_medicamento)
+    {
+        $query = "SELECT COUNT(*) AS count FROM FIDE_INVENTARIO_TB WHERE ID_MEDICAMENTO = :id_medicamento";
+        self::getConexion();
+        $stmt = oci_parse(self::$cnx, $query);
+        oci_bind_by_name($stmt, ':id_medicamento', $id_medicamento);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        self::desconectar();
+        return $row['COUNT'] > 0;
+    }
+
     public function guardarInventario()
     {
+
+       // Validar existencia de id_medicamento en FIDE_MEDICAMENTOS_TB
+    if (!$this->validarIdMedicamento($this->getIdMedicamento())) {
+        echo json_encode(array("error" => "El id_medicamento no existe en la tabla FIDE_MEDICAMENTOS_TB."));
+        return;
+    }
+
+    // Validar que no se repita id_medicamento en la tabla FIDE_INVENTARIO_TB
+    if ($this->existeIdMedicamentoEnInventario($this->getIdMedicamento())) {
+        echo json_encode(array("error" => "El id_medicamento ya existe en la tabla FIDE_INVENTARIO_TB."));
+        return;
+    }
         $query = "INSERT INTO FIDE_INVENTARIO_TB (ID_INVENTARIO, ID_MEDICAMENTO, PRECIO, CANTIDAD) 
                   VALUES (:id_inventario, :id_medicamento, :precio, :cantidad)";
         try {

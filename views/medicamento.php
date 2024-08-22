@@ -32,10 +32,6 @@
                                     <label for="descripcion_medicamento">Descripción</label>
                                     <input type="text" class="form-control" id="descripcion_medicamento" name="descripcion_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label for="idinventario">Id inventario</label>
-                                    <input type="number" class="form-control" id="idinventario" name="id_inventario" required>
-                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -67,10 +63,6 @@
                                     <label for="Edescripcion_medicamento">Descripción</label>
                                     <input type="text" class="form-control" id="Edescripcion_medicamento" name="descripcion_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label for="Eid_inventario">Id inventario</label>
-                                    <input type="number" class="form-control" id="Eid_inventario" name="id_inventario" required>
-                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -99,7 +91,6 @@
                                     <th>ID</th>
                                     <th>Nombre del Medicamento</th>
                                     <th>Descripción</th>
-                                    <th>ID Inventario</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -111,7 +102,6 @@
                                     <th>ID</th>
                                     <th>Nombre del Medicamento</th>
                                     <th>Descripción</th>
-                                    <th>ID Inventario</th>
                                     <th>Opciones</th>
                                 </tr>
                             </tfoot>
