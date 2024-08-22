@@ -29,10 +29,6 @@
                                     <input type="number" class="form-control" id="id_mascota" name="id_mascota" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="id_cliente">ID Cliente</label>
-                                    <input type="number" class="form-control" id="id_cliente" name="id_cliente" required>
-                                </div>
-                                <div class="form-group col-md-4">
                                     <label for="id_empleado">ID Empleado</label>
                                     <input type="number" class="form-control" id="id_empleado" name="id_empleado" required>
                                 </div>
@@ -86,10 +82,6 @@
                                 <div class="form-group col-md-4">
                                     <label for="Eid_mascota">ID Mascota</label>
                                     <input type="number" class="form-control" id="Eid_mascota" name="id_mascota" required readonly>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="Eid_cliente">ID Cliente</label>
-                                    <input type="number" class="form-control" id="Eid_cliente" name="id_cliente" required readonly>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="Eid_empleado">ID Empleado</label>
@@ -146,7 +138,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Mascota</th>
-                                    <th>Cliente</th>
                                     <th>Empleado</th>
                                     <th>Fecha</th>
                                     <th>Descripción</th>
@@ -162,7 +153,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Mascota</th>
-                                    <th>Cliente</th>
                                     <th>Empleado</th>
                                     <th>Fecha</th>
                                     <th>Descripción</th>

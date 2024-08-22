@@ -28,27 +28,26 @@ switch ($_GET["op"]) {
         echo json_encode($resultados);
         break;
     
-    case 'insertar':
-        $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
-        $id_cliente = isset($_POST["id_cliente"]) ? trim($_POST["id_cliente"]) : 0;
-        $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
-        $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
-        $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
-        $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
-        $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
-
-        $consulta = new consultaModel();
-        $consulta->setIdMascota($id_mascota);
-        $consulta->setIdCliente($id_cliente);
-        $consulta->setIdEmpleado($id_empleado);
-        $consulta->setIdEstado($id_estado);
-        $consulta->setFecha($fecha);
-        $consulta->setDescripcion($descripcion);
-        $consulta->setPrecio($precio);
+        case 'insertar':
+            $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
+            $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
+            $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
+            $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
+            $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
+            $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
         
-        $consulta->guardarConsulta();
-        echo 1;
-        break;
+            $consulta = new consultaModel();
+            $consulta->setIdMascota($id_mascota);
+            // El ID del cliente se establece en el modelo automáticamente
+            $consulta->setIdEmpleado($id_empleado);
+            $consulta->setIdEstado($id_estado);
+            $consulta->setFecha($fecha);
+            $consulta->setDescripcion($descripcion);
+            $consulta->setPrecio($precio);
+            
+            $consulta->guardarConsulta();
+            echo 1;
+            break;
 
     case 'mostrar':
         $id_consulta = isset($_POST["idConsulta"]) ? $_POST["idConsulta"] : "";
@@ -63,34 +62,33 @@ switch ($_GET["op"]) {
         }
         break;
 
-    case 'editar':
-        $id = isset($_POST["id"]) ? trim($_POST["id"]) : "";
-        $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
-        $id_cliente = isset($_POST["id_cliente"]) ? trim($_POST["id_cliente"]) : 0;
-        $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
-        $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
-        $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
-        $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
-        $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
-
-        $consulta = new consultaModel();
-        $consulta->setIdConsulta($id);
-        $consulta->setIdMascota($id_mascota);
-        $consulta->setIdCliente($id_cliente);
-        $consulta->setIdEmpleado($id_empleado);
-        $consulta->setIdEstado($id_estado);
-        $consulta->setFecha($fecha);
-        $consulta->setDescripcion($descripcion);
-        $consulta->setPrecio($precio);
-
-        $resultado = $consulta->actualizarConsulta();
-
-        if ($resultado === true) {
-            echo 1;
-        } else {
-            echo 0;
-        }
-        break;
+        case 'editar':
+            $id = isset($_POST["id"]) ? trim($_POST["id"]) : "";
+            $id_mascota = isset($_POST["id_mascota"]) ? trim($_POST["id_mascota"]) : 0;
+            $id_empleado = isset($_POST["id_empleado"]) ? trim($_POST["id_empleado"]) : 0;
+            $id_estado = isset($_POST["id_estado"]) ? trim($_POST["id_estado"]) : 1;
+            $fecha = isset($_POST["fecha"]) ? trim($_POST["fecha"]) : "";
+            $descripcion = isset($_POST["descripcion"]) ? trim($_POST["descripcion"]) : "";
+            $precio = isset($_POST["precio"]) ? trim($_POST["precio"]) : 0;
+        
+            $consulta = new consultaModel();
+            $consulta->setIdConsulta($id);
+            $consulta->setIdMascota($id_mascota);
+            // El ID del cliente se establece en el modelo automáticamente
+            $consulta->setIdEmpleado($id_empleado);
+            $consulta->setIdEstado($id_estado);
+            $consulta->setFecha($fecha);
+            $consulta->setDescripcion($descripcion);
+            $consulta->setPrecio($precio);
+        
+            $resultado = $consulta->actualizarConsulta();
+        
+            if ($resultado === true) {
+                echo 1;
+            } else {
+                echo 0;
+            }
+            break;
 
     case 'eliminar':
         $id_consulta = isset($_POST["idConsulta"]) ? $_POST["idConsulta"] : "";

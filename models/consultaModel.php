@@ -144,39 +144,59 @@ class consultaModel
         }
     }
 
-    public function mostrar()
-{
-    $query = "SELECT * FROM FIDE_CONSULTAS_TB WHERE ID_CONSULTA = :id_consulta";
-    try {
-        self::getConexion();
-        $stmt = oci_parse(self::$cnx, $query);
-        oci_bind_by_name($stmt, ':id_consulta', $this->id_consulta);
-        oci_execute($stmt);
-        
-        $row = oci_fetch_assoc($stmt);
-        if ($row) {
-            $consulta = array(
-                'id_consulta' => $row['ID_CONSULTA'],
-                'id_mascota' => $row['ID_MASCOTA'],
-                'id_cliente' => $row['ID_CLIENTE'],
-                'id_empleado' => $row['ID_EMPLEADO'],
-                'id_estado' => $row['ID_ESTADO'],
-                'fecha' => $row['FECHA'],
-                'descripcion' => $row['DESCRIPCION'],
-                'precio' => $row['PRECIO']
-            );
-            self::desconectar();
-            return $consulta;
-        } else {
-            self::desconectar();
-            return null;
-        }
-    } catch (Exception $e) {
-        self::desconectar();
-        return "Error " . $e->getCode() . ": " . $e->getMessage();
-    }
-}
+    private function obtenerIdCliente($id_mascota)
+    {
+        $query = "SELECT ID_CLIENTE FROM FIDE_MASCOTAS_TB WHERE ID_MASCOTA = :id_mascota";
+        try {
+            self::getConexion();
+            $stmt = oci_parse(self::$cnx, $query);
+            oci_bind_by_name($stmt, ':id_mascota', $id_mascota);
+            oci_execute($stmt);
 
+            $row = oci_fetch_assoc($stmt);
+            if ($row) {
+                return $row['ID_CLIENTE'];
+            } else {
+                throw new Exception("No se encontró el cliente para la mascota con ID $id_mascota");
+            }
+        } catch (Exception $e) {
+            self::desconectar();
+            throw new Exception("Error al obtener el ID del cliente: " . $e->getMessage());
+        }
+    }
+
+    public function mostrar()
+    {
+        $query = "SELECT * FROM FIDE_CONSULTAS_TB WHERE ID_CONSULTA = :id_consulta";
+        try {
+            self::getConexion();
+            $stmt = oci_parse(self::$cnx, $query);
+            oci_bind_by_name($stmt, ':id_consulta', $this->id_consulta);
+            oci_execute($stmt);
+            
+            $row = oci_fetch_assoc($stmt);
+            if ($row) {
+                $consulta = array(
+                    'id_consulta' => $row['ID_CONSULTA'],
+                    'id_mascota' => $row['ID_MASCOTA'],
+                    'id_cliente' => $row['ID_CLIENTE'],
+                    'id_empleado' => $row['ID_EMPLEADO'],
+                    'id_estado' => $row['ID_ESTADO'],
+                    'fecha' => $row['FECHA'],
+                    'descripcion' => $row['DESCRIPCION'],
+                    'precio' => $row['PRECIO']
+                );
+                self::desconectar();
+                return $consulta;
+            } else {
+                self::desconectar();
+                return null;
+            }
+        } catch (Exception $e) {
+            self::desconectar();
+            return "Error " . $e->getCode() . ": " . $e->getMessage();
+        }
+    }
 
     public static function obtenerEstados()
     {
@@ -197,6 +217,10 @@ class consultaModel
                   VALUES (:id_mascota, :id_cliente, :id_empleado, :id_estado, TO_DATE(:fecha, 'DD-MM-YYYY'), :descripcion, :precio)";
         try {
             self::getConexion();
+            
+            // Obtener el ID del cliente a partir del ID de la mascota
+            $id_cliente = $this->obtenerIdCliente($this->getIdMascota());
+
             $stmt = oci_parse(self::$cnx, $query);
 
             // Convertir fecha a formato compatible con Oracle
@@ -204,7 +228,7 @@ class consultaModel
 
             // Bind parameters
             oci_bind_by_name($stmt, ':id_mascota', $this->id_mascota);
-            oci_bind_by_name($stmt, ':id_cliente', $this->id_cliente);
+            oci_bind_by_name($stmt, ':id_cliente', $id_cliente);
             oci_bind_by_name($stmt, ':id_empleado', $this->id_empleado);
             oci_bind_by_name($stmt, ':id_estado', $this->id_estado);
             oci_bind_by_name($stmt, ':fecha', $fecha);
@@ -236,54 +260,34 @@ class consultaModel
                   WHERE ID_CONSULTA = :id_consulta";
         try {
             self::getConexion();
-            $stmt = oci_parse(self::$cnx, $query);
 
-            $id_consulta = $this->getIdConsulta();
-            $id_mascota = $this->getIdMascota();
-            $id_cliente = $this->getIdCliente();
-            $id_empleado = $this->getIdEmpleado();
-            $id_estado = $this->getIdEstado();
+            // Obtener el ID del cliente a partir del ID de la mascota
+            $id_cliente = $this->obtenerIdCliente($this->getIdMascota());
+
+            $stmt = oci_parse(self::$cnx, $query);
 
             // Convertir fecha a formato compatible con Oracle
             $fecha = date('d-m-Y', strtotime($this->getFecha())); // Debe estar en formato 'DD-MM-YYYY'
 
-            oci_bind_by_name($stmt, ':id_consulta', $id_consulta);
-            oci_bind_by_name($stmt, ':id_mascota', $id_mascota);
+            // Bind parameters
+            oci_bind_by_name($stmt, ':id_mascota', $this->id_mascota);
             oci_bind_by_name($stmt, ':id_cliente', $id_cliente);
-            oci_bind_by_name($stmt, ':id_empleado', $id_empleado);
-            oci_bind_by_name($stmt, ':id_estado', $id_estado);
+            oci_bind_by_name($stmt, ':id_empleado', $this->id_empleado);
+            oci_bind_by_name($stmt, ':id_estado', $this->id_estado);
             oci_bind_by_name($stmt, ':fecha', $fecha);
             oci_bind_by_name($stmt, ':descripcion', $this->descripcion);
             oci_bind_by_name($stmt, ':precio', $this->precio);
+            oci_bind_by_name($stmt, ':id_consulta', $this->id_consulta);
 
-            oci_execute($stmt);
-            self::desconectar();
-            return true;
-        } catch (Exception $Exception) {
-            self::desconectar();
-            return "Error " . $Exception->getCode() . ": " . $Exception->getMessage();
-        }
-    }
-
-    public function eliminarConsulta()
-    {
-        $query = "DELETE FROM FIDE_CONSULTAS_TB WHERE ID_CONSULTA = :id_consulta";
-        try {
-            self::getConexion();
-            $stmt = oci_parse(self::$cnx, $query);
-
-            $id_consulta = $this->getIdConsulta();
-            oci_bind_by_name($stmt, ':id_consulta', $id_consulta);
-
+            // Ejecutar la consulta
             if (!oci_execute($stmt)) {
                 $e = oci_error($stmt);
                 throw new Exception($e['message']);
             }
             self::desconectar();
-            return true;
         } catch (Exception $e) {
             self::desconectar();
-            return "Error " . $e->getCode() . ": " . $e->getMessage();
+            echo json_encode(array("error" => $e->getMessage()));
         }
     }
 }
