@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-
+        <br>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">
@@ -161,3 +161,23 @@
 <script src="assets/js/cita.js"></script>
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Establecer la fecha mínima en el campo de fecha
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha').setAttribute('min', today);
+        document.getElementById('Efecha').setAttribute('min', today);
+
+        // Validar hora en el campo de hora
+        document.getElementById('cita_add').addEventListener('submit', function(event) {
+            var hora = document.getElementById('hora').value;
+            var horaMin = '08:00';
+            var horaMax = '20:00';
+
+            if (hora < horaMin || hora > horaMax) {
+                event.preventDefault(); // Evita el envío del formulario
+                alert('La hora debe estar entre 08:00 y 20:00.');
+            }
+        });
+    });
+</script>

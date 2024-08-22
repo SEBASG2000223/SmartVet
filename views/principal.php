@@ -7,16 +7,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        /* Estilo para los cards */
         .card {
             margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05); /* Añade un efecto de escala al pasar el mouse */
         }
         .card-header {
-            font-size: 1.2em;
+            font-size: 1.5em; /* Aumenta el tamaño del texto en el encabezado */
+            font-weight: bold; /* Hace el texto en el encabezado en negrita */
         }
         .card-body i {
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 3em; /* Aumenta el tamaño de los iconos */
+            margin-bottom: 20px;
             color: black; /* Cambia el color de los iconos a negro */
+        }
+        .card-body .btn {
+            font-size: 1.2em; /* Aumenta el tamaño del texto en el botón */
+            padding: 15px; /* Aumenta el padding del botón para hacerlo más grande */
+        }
+        .card {
+            padding: 20px; /* Añade padding interno a los cards */
+        }
+        .container {
+            margin-top: 30px; /* Añade margen superior a la container para separarla del header */
+        }
+        .row > div {
+            margin-bottom: 30px; /* Añade margen inferior a cada card para separarlos más */
         }
         .report-section {
             margin-top: 50px;
@@ -31,7 +50,7 @@
 <body>
     <!-- Header -->
     <header class="bg-dark text-white text-center py-3">
-        <h1 class="display-4">Gestión de la Clínica Veterinaria</h1>
+        <h1 class="display-4">Gestión de la Clínica Veterinaria SmartVet</h1>
         <p class="lead">Accede a las diferentes secciones del sistema</p>
     </header>
 
@@ -181,10 +200,9 @@
         </div>
 
         <!-- Sección de Reportes -->
-       <!-- Sección de Reportes -->
-       <div class="report-section text-center">
+        <div class="report-section text-center">
             <h2 class="my-4">Reportes</h2>
-            <a href="https://app.powerbi.com/groups/me/reports/93ede8df-cf46-40a3-a5f0-85b4a3a795f1/03d1abb675736430defc?ctid=dde2fb8f-d8e0-445e-b851-e69c198c1e59&experience=power-bi" target="_blank" class="btn btn-warning btn-lg">
+            <a href="reportes.php" target="_blank" class="btn btn-warning btn-lg">
                 <i class="fas fa-chart-bar"></i> Ver Reportes
             </a>
         </div>

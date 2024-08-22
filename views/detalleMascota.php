@@ -42,9 +42,14 @@
                                     <input type="text" class="form-control" id="raza" name="raza" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="genero">Género</label>
-                                    <input type="text" class="form-control" id="genero" name="genero" required>
-                                </div>
+    <label for="genero">Género</label>
+    <select class="form-control" id="genero" name="genero" required>
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+    </select>
+</div>
+
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -85,10 +90,15 @@
                                     <label for="Eraza">Raza</label>
                                     <input type="text" class="form-control" id="Eraza" name="raza" required>
                                 </div>
+                               
                                 <div class="form-group col-md-4">
-                                    <label for="Egenero">Género</label>
-                                    <input type="text" class="form-control" id="Egenero" name="genero" required>
-                                </div>
+    <label for="Egenero">Género</label>
+    <select class="form-control" id="Egenero" name="genero" required>
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+    </select>
+</div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -103,7 +113,7 @@
                 </div>
             </div>
         </div>
-
+        <br>
         <!-- Tabla para mostrar los detalles de mascotas -->
         <div class="row">
             <div class="col-md-12">

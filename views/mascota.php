@@ -193,7 +193,7 @@
                 </div>
             </div>
         </div>
-
+<br>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">
@@ -231,6 +231,7 @@
             </div>
         </div>
     </div>
+    
 </section>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
