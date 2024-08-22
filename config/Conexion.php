@@ -1,5 +1,4 @@
 <?php
-
 class Conexion
 {
     private static $oracleConnection = null;
@@ -20,4 +19,5 @@ class Conexion
     }
 
   }
+
 ?>
