@@ -10,33 +10,26 @@ function cancelarForm() {
 }
 
 function listarMedicamentosTodos() {
-    tabla = $('#tbllistado').DataTable({
-        processing: true,
-        serverSide: true,
-        dom: 'Bfrtip',
+    tabla = $('#tbllistado').dataTable({
+        aProcessing: true, 
+        aServerSide: true, 
+        dom: 'Bfrtip', 
         buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
         ajax: {
             url: '../controllers/medicamentoController.php?op=listar_para_tabla',
-            type: 'GET',
+            type: 'get',
             dataType: 'json',
-            error: function (xhr, error, thrown) {
-                console.error('Error en la solicitud AJAX:', thrown);
-                console.error('Detalles del error:', xhr.responseText);
+            error: function (e) {
+                console.log(e.responseText);
             }
         },
-        destroy: true,
-        pageLength: 5,
-        columns: [
-            { data: 'id_medicamento' },
-            { data: 'nombre_medicamento' },
-            { data: 'descripcion_medicamento' },
-            { data: 'id_inventario' },
-            { data: 'acciones' }
-        ]
+        bDestroy: true,
+        iDisplayLength: 5 
     });
 }
 
 $(function () {
+    $('#formulario_update').hide();
     listarMedicamentosTodos();
 });
 
@@ -55,7 +48,7 @@ $('#medicamento_add').on('submit', function (event) {
             if (response == '1') {
                 toastr.success('Medicamento registrado');
                 $('#medicamento_add')[0].reset();
-                tabla.ajax.reload();
+                tabla.api().ajax.reload();
             } else {
                 toastr.error('Hubo un error al tratar de ingresar los datos.');
             }
@@ -74,10 +67,10 @@ $('#tbllistado tbody').on('click', 'button[id="modificarMedicamento"]', function
     $('#formulario_add').hide();
     $('#formulario_update').show();
 
-    $('#EId').val(data.id_medicamento);
-    $('#Enombre_medicamento').val(data.nombre_medicamento);
-    $('#Edescripcion_medicamento').val(data.descripcion_medicamento);
-    $('#Eid_inventario').val(data.id_inventario);
+    $('#EId').val(data[0]);
+    $('#Enombre_medicamento').val(data[1]);
+    $('#Edescripcion_medicamento').val(data[2]);
+    $('#Eid_inventario').val(data[3]);
     return false;
 });
 
@@ -86,6 +79,7 @@ $('#medicamento_update').on('submit', function (event) {
     bootbox.confirm('¿Desea modificar los datos?', function (result) {
         if (result) {
             var formData = new FormData($('#medicamento_update')[0]);
+            console.log([...formData]); // Verifica los datos antes de enviarlos
             $.ajax({
                 url: '../controllers/medicamentoController.php?op=editar',
                 type: 'POST',
@@ -93,17 +87,19 @@ $('#medicamento_update').on('submit', function (event) {
                 contentType: false,
                 processData: false,
                 success: function (datos) {
+                    console.log('Respuesta del servidor:', datos); 
                     if (datos.trim() == '1') {
                         toastr.success('Medicamento actualizado exitosamente');
-                        tabla.ajax.reload();
-                        limpiarForms();
-                        $('#formulario_update').hide();
-                        $('#formulario_add').show();
+                        tabla.api().ajax.reload(); 
+                        limpiarForms(); 
+                        $('#formulario_update').hide(); 
+                        $('#formulario_add').show(); 
                     } else {
                         toastr.error('Error: No se pudieron actualizar los datos. Respuesta del servidor: ' + datos);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('Error AJAX:', jqXHR.responseText); 
                     toastr.error('Error de comunicación: ' + textStatus + ' - ' + errorThrown);
                 }
             });

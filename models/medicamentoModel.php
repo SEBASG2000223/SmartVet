@@ -1,6 +1,5 @@
 <?php
 require_once '../config/Conexion.php';
-header('Content-Type: text/html; charset=utf-8');
 
 class medicamentoModel
 {
@@ -57,40 +56,58 @@ class medicamentoModel
 
     public static function desconectar()
     {
-        self::$cnx = null;
+        if (self::$cnx !== null) {
+            oci_close(self::$cnx);
+            self::$cnx = null;
+        }
     }
 
-    public function listarMedicamentos()
-{
-    $conn = Conexion::conectarOracle();
-    $query = "SELECT id_medicamento, nombre_medicamento, descripcion_medicamento, id_inventario FROM FIDE_MEDICAMENTOS_TB";
-    $stmt = oci_parse($conn, $query);
-    
-    if (!oci_execute($stmt)) {
-        $e = oci_error($stmt);
-        die("Error en la ejecución de la consulta: " . $e['message']);
-    }
-    
-    $medicamentos = array();
-    while ($row = oci_fetch_assoc($stmt)) {
-        $medicamentos[] = $row;
-    }
-    
-    oci_free_statement($stmt);
-    oci_close($conn);
-    
-
-    
-    return $medicamentos;
-}
-
-
-    public function guardarMedicamento()
+    public function listarTodosMedicamentos()
     {
-        $query = "INSERT INTO FIDE_MEDICAMENTOS_TB (id_medicamento, nombre_medicamento, descripcion_medicamento, id_inventario) VALUES (:id_medicamento, :nombre_medicamento, :descripcion_medicamento, :id_inventario)";
+        $query = "SELECT * FROM FIDE_MEDICAMENTOS_TB";
+        $arr = array();
         try {
             self::getConexion();
             $stmt = oci_parse(self::$cnx, $query);
+            if (!$stmt) {
+                throw new Exception('Error en la preparación de la consulta: ' . oci_error(self::$cnx)['message']);
+            }
+
+            if (!oci_execute($stmt)) {
+                throw new Exception('Error al ejecutar la consulta: ' . oci_error($stmt)['message']);
+            }
+
+            while ($row = oci_fetch_assoc($stmt)) {
+                $medicamento = new medicamentoModel();
+                $medicamento->setIdMedicamento($row['ID_MEDICAMENTO']);
+                $medicamento->setNombreMedicamento($row['NOMBRE_MEDICAMENTO']);
+                $medicamento->setDescripcionMedicamento($row['DESCRIPCION_MEDICAMENTO']);
+                $medicamento->setIdInventario($row['ID_INVENTARIO']);
+                $arr[] = array(
+                    'id_medicamento' => $medicamento->getIdMedicamento(),
+                    'nombre_medicamento' => $medicamento->getNombreMedicamento(),
+                    'descripcion_medicamento' => $medicamento->getDescripcionMedicamento(),
+                    'id_inventario' => $medicamento->getIdInventario(),
+                );
+            }
+
+            self::desconectar();
+            return $arr;
+        } catch (Exception $e) {
+            self::desconectar();
+            return "Error " . $e->getCode() . ": " . $e->getMessage();
+        }
+    }
+
+    public function guardarMedicamento()
+    {
+        $query = "INSERT INTO FIDE_MEDICAMENTOS_TB (ID_MEDICAMENTO, NOMBRE_MEDICAMENTO, DESCRIPCION_MEDICAMENTO, ID_INVENTARIO) VALUES (:id_medicamento, :nombre_medicamento, :descripcion_medicamento, :id_inventario)";
+        try {
+            self::getConexion();
+            $stmt = oci_parse(self::$cnx, $query);
+            if (!$stmt) {
+                throw new Exception('Error en la preparación de la consulta: ' . oci_error(self::$cnx)['message']);
+            }
 
             oci_bind_by_name($stmt, ':id_medicamento', $this->id_medicamento);
             oci_bind_by_name($stmt, ':nombre_medicamento', $this->nombre_medicamento);
@@ -111,24 +128,27 @@ class medicamentoModel
     public function actualizarMedicamento()
     {
         $query = "UPDATE FIDE_MEDICAMENTOS_TB 
-                  SET nombre_medicamento = :nombre_medicamento, 
-                      descripcion_medicamento = :descripcion_medicamento, 
-                      id_inventario = :id_inventario 
-                  WHERE id_medicamento = :id_medicamento";
+                  SET NOMBRE_MEDICAMENTO = :nombre_medicamento, 
+                      DESCRIPCION_MEDICAMENTO = :descripcion_medicamento, 
+                      ID_INVENTARIO = :id_inventario 
+                  WHERE ID_MEDICAMENTO = :id_medicamento";
         try {
             self::getConexion();
             $stmt = oci_parse(self::$cnx, $query);
-
+            if (!$stmt) {
+                throw new Exception('Error en la preparación de la consulta: ' . oci_error(self::$cnx)['message']);
+            }
+    
             $id_medicamento = $this->getIdMedicamento();
             $nombre_medicamento = $this->getNombreMedicamento();
             $descripcion_medicamento = $this->getDescripcionMedicamento();
             $id_inventario = $this->getIdInventario();
-
+    
             oci_bind_by_name($stmt, ':id_medicamento', $id_medicamento);
             oci_bind_by_name($stmt, ':nombre_medicamento', $nombre_medicamento);
             oci_bind_by_name($stmt, ':descripcion_medicamento', $descripcion_medicamento);
             oci_bind_by_name($stmt, ':id_inventario', $id_inventario);
-
+    
             if (!oci_execute($stmt)) {
                 $e = oci_error($stmt);
                 throw new Exception($e['message']);
@@ -140,5 +160,6 @@ class medicamentoModel
             return "Error " . $e->getCode() . ": " . $e->getMessage();
         }
     }
+    
 }
 ?>

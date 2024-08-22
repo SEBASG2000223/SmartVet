@@ -24,17 +24,17 @@
                     <div class="card-body">
                         <form id="medicamento_add" method="POST">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="nombre_medicamento">Nombre del Medicamento</label>
                                     <input type="text" class="form-control" id="nombre_medicamento" name="nombre_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="descripcion_medicamento">Descripción</label>
                                     <input type="text" class="form-control" id="descripcion_medicamento" name="descripcion_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="id_inventario">ID Inventario</label>
-                                    <input type="number" class="form-control" id="id_inventario" name="id_inventario" required>
+                                <div class="form-group col-md-4">
+                                    <label for="idinventario">Id inventario</label>
+                                    <input type="number" class="form-control" id="idinventario" name="id_inventario" required>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -57,18 +57,18 @@
                     </div>
                     <div class="card-body">
                         <form id="medicamento_update" method="POST">
-                            <input type="hidden" id="EId" name="id_medicamento">
+                            <input type="hidden" id="EId" name="id">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="Enombre_medicamento">Nombre del Medicamento</label>
                                     <input type="text" class="form-control" id="Enombre_medicamento" name="nombre_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="Edescripcion_medicamento">Descripción</label>
                                     <input type="text" class="form-control" id="Edescripcion_medicamento" name="descripcion_medicamento" required>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="Eid_inventario">ID Inventario</label>
+                                <div class="form-group col-md-4">
+                                    <label for="Eid_inventario">Id inventario</label>
                                     <input type="number" class="form-control" id="Eid_inventario" name="id_inventario" required>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre del Medicamento</th>
                                     <th>Descripción</th>
                                     <th>ID Inventario</th>
                                     <th>Opciones</th>
@@ -109,7 +109,7 @@
                             <tfoot>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre del Medicamento</th>
                                     <th>Descripción</th>
                                     <th>ID Inventario</th>
                                     <th>Opciones</th>
